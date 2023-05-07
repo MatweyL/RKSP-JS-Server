@@ -49,6 +49,33 @@ app.delete('/posts', (req, res) => {
 })
 
 
+app.post('/users', (req, res) => {
+    db.getUser(req.body)
+        .then(response => {
+            if (!response) {
+                res.status(401).send({...response, 'success': false});
+            }
+            else {
+                res.status(200).send({...response, 'success': true});
+            }
+        })
+        .catch(error => {
+            res.status(500).send({...error, 'success': false});
+        })
+});
+
+
+app.get('/users', (req, res) => {
+    db.getUsers(req.body)
+        .then(response => {
+            res.status(200).send({'users': response, 'success': true});
+        })
+        .catch(error => {
+            res.status(500).send({...error, 'success': false});
+        })
+})
+
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
